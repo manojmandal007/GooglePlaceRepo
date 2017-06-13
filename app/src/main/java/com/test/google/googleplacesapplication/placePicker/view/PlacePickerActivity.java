@@ -62,6 +62,6 @@ public class PlacePickerActivity extends BaseActivity implements PlacePickerFrag
         bundle.putDouble(LATITUDE_KEY, latitude);
         bundle.putDouble(LONGITUDE_KEY, longitude);
         fragment.setArguments(bundle);
-        FragmentUtil.replaceFragment(this, fragment, R.id.main_container);
+        FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
     }
 }

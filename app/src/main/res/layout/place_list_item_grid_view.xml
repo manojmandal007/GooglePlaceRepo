@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_280_dp"
+    android:layout_margin="@dimen/dimen_4_dp"
+    android:background="@color/lightgray">
+
+    <ImageView
+        android:id="@+id/place_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_80_dp"
+        android:src="@drawable/common_google_signin_btn_icon_dark" />
+
+    <TextView
+        android:id="@+id/place_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/place_iv"
+        android:layout_marginBottom="@dimen/dimen_10_dp"
+        android:layout_marginStart="@dimen/dimen_10_dp"
+        android:layout_marginTop="@dimen/dimen_10_dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/lat_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/place_tv"
+        android:layout_marginBottom="@dimen/dimen_10_dp"
+        android:layout_marginEnd="@dimen/dimen_5_dp"
+        android:layout_marginStart="@dimen/dimen_10_dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/lang_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lat_tv"
+        android:layout_marginBottom="@dimen/dimen_10_dp"
+        android:layout_marginEnd="@dimen/dimen_5_dp"
+        android:layout_marginStart="@dimen/dimen_10_dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/highlight_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lang_tv"
+        android:layout_marginEnd="@dimen/dimen_5_dp"
+        android:layout_marginStart="@dimen/dimen_10_dp"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dimen_10_dp"
+        android:background="@color/liver_1" />
+</RelativeLayout>

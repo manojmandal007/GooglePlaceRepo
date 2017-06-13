@@ -2,6 +2,7 @@ package com.test.google.googleplacesapplication.nearPlace.intractor;
 
 import com.test.google.googleplacesapplication.common.io.APICallback;
 import com.test.google.googleplacesapplication.common.util.APIServiceUtil;
+import com.test.google.googleplacesapplication.nearPlace.manager.NearPlaceManager;
 import com.test.google.googleplacesapplication.nearPlace.model.PlaceResponse;
 
 import retrofit2.Call;
@@ -35,6 +36,7 @@ public class NearPlaceIntractorImpl implements NearPlaceIntractor {
                     listener.onNearPlaceDetailFetchFailed();
                     return;
                 }
+                NearPlaceManager.getInstance().setNearLocationData(response);
                 listener.onNearPlaceDetailFetchSuccess(response);
             }
 

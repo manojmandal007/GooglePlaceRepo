@@ -1,13 +1,13 @@
 package com.test.google.googleplacesapplication.nearPlace.view.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.test.google.googleplacesapplication.R;
-import com.test.google.googleplacesapplication.nearPlace.view.ui.DummyFragment;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.MapFragment;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.PlaceFragment;
 
 import java.util.Arrays;
 
@@ -31,11 +31,11 @@ public class NearPlaceAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case NEAR_PLACE_LIST_POS:
-                return new DummyFragment();
+                return new PlaceFragment();
             case NEAR_PLACE_MAP_POS:
-                return new DummyFragment();
+                return new MapFragment();
             default:
-                return new DummyFragment();
+                return new PlaceFragment();
         }
     }
 
