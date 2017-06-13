@@ -24,10 +24,16 @@ public class PlaceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<Result> mPlaceList = new ArrayList<>();
     private static final int LIST_ITEM = 0;
     private static final int GRID_ITEM = 1;
+    private OnItemClickListener mOnItemClickListener;
     private boolean mIsSwitchView = true;
 
-    public PlaceAdapter(List<Result> menuResponseList) {
+    public interface OnItemClickListener {
+        void onItemClicked(int pos);
+    }
+
+    public PlaceAdapter(List<Result> menuResponseList, OnItemClickListener listener) {
         mPlaceList = menuResponseList;
+        mOnItemClickListener = listener;
     }
 
     @Override
@@ -67,7 +73,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         setPlaceData(placeViewHolder, position);
     }
 
-    private void setPlaceData(ViewHolder holder, int position) {
+    private void setPlaceData(ViewHolder holder, final int position) {
         if (mPlaceList.size() > position) {
             Context ctx = holder.placeImage.getContext();
             Result data = mPlaceList.get(position);
@@ -80,6 +86,13 @@ public class PlaceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 imageUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=AIzaSyDbivDexfwFTRjfBSaiDSH02OTPeok6dLQ&photoreference=" + data.photos.get(0).photoReference;
             }
             Glide.with(ctx).load(imageUrl).placeholder(R.drawable.common_google_signin_btn_icon_dark).fitCenter().into(holder.placeImage);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClicked(position);
+                }
+            });
         }
     }
 

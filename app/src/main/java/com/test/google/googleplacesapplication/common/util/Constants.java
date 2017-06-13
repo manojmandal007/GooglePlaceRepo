@@ -10,6 +10,7 @@ public class Constants {
     public interface BundleKeys {
         String LATITUDE_KEY= "com.test.google.googleplacesapplication.latitude_key";
         String LONGITUDE_KEY= "com.test.google.googleplacesapplication.longitude_key";
+        String PLACE_POS_KEY= "com.test.google.googleplacesapplication.place_pos_key";
     }
 
 

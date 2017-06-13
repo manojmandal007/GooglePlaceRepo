@@ -9,12 +9,15 @@ import com.google.android.gms.location.places.Places;
 import com.test.google.googleplacesapplication.R;
 import com.test.google.googleplacesapplication.common.ui.BaseActivity;
 import com.test.google.googleplacesapplication.common.util.FragmentUtil;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.NearPlaceDetailFragment;
 import com.test.google.googleplacesapplication.nearPlace.view.ui.NearPlaceFragment;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.PlaceFragment;
 
 import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.LATITUDE_KEY;
 import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.LONGITUDE_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_POS_KEY;
 
-public class PlacePickerActivity extends BaseActivity implements PlacePickerFragment.OnLocationSelectedListener {
+public class PlacePickerActivity extends BaseActivity implements PlacePickerFragment.OnLocationSelectedListener, PlaceFragment.OnNearPlaceClickListener {
 
     private GoogleApiClient mClient;
     private Toolbar mToolBar;
@@ -61,6 +64,15 @@ public class PlacePickerActivity extends BaseActivity implements PlacePickerFrag
         Bundle bundle = new Bundle();
         bundle.putDouble(LATITUDE_KEY, latitude);
         bundle.putDouble(LONGITUDE_KEY, longitude);
+        fragment.setArguments(bundle);
+        FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
+    }
+
+    @Override
+    public void onNearPlaceClicked(int pos) {
+        Fragment fragment = new NearPlaceDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PLACE_POS_KEY, pos);
         fragment.setArguments(bundle);
         FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
     }

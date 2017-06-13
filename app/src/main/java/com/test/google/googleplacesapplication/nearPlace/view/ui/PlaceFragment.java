@@ -1,5 +1,6 @@
 package com.test.google.googleplacesapplication.nearPlace.view.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,8 +23,25 @@ import java.util.List;
  * Created by manoj on 12/6/17.
  */
 
-public class PlaceFragment extends RecyclerViewFragment {
+public class PlaceFragment extends RecyclerViewFragment implements PlaceAdapter.OnItemClickListener {
     private List<Result> mPlaceList = new ArrayList<>();
+    private OnNearPlaceClickListener mListener;
+
+    public interface OnNearPlaceClickListener {
+        void onNearPlaceClicked(int pos);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnNearPlaceClickListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            throw new ClassCastException("Activity must implement OnNearPlaceClickListener");
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -52,7 +70,7 @@ public class PlaceFragment extends RecyclerViewFragment {
             case R.id.list_grid_icon:
                 boolean isSwitched = ((PlaceAdapter) mRecyclerView.getAdapter()).toggleItemViewType();
 
-                item.setTitle(isSwitched ? getString(R.string.list) : getString(R.string.grid));
+                item.setTitle(isSwitched ? getString(R.string.grid) : getString(R.string.list));
                 mRecyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getActivity()) : new GridLayoutManager(getActivity(), 2));
                 mRecyclerView.getAdapter().notifyDataSetChanged();
                 return true;
@@ -63,8 +81,12 @@ public class PlaceFragment extends RecyclerViewFragment {
     }
 
     private void setListAdapter() {
-        PlaceAdapter adapter = new PlaceAdapter(mPlaceList);
+        PlaceAdapter adapter = new PlaceAdapter(mPlaceList, this);
         mRecyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onItemClicked(int pos) {
+        mListener.onNearPlaceClicked(pos);
+    }
 }

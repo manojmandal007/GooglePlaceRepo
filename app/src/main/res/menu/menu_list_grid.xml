@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/list_grid_icon"
-        android:title="@string/list"
+        android:title="@string/grid"
         app:showAsAction="always" />
 
 </menu>

@@ -17,10 +17,21 @@ public class BaseFragment extends Fragment {
     private int mLayoutId;
     private ProgressBar mProgressBar;
     protected OnBackButtonClickListener mBackButtonClickListener;
+    protected ActionBarIconListener mActionBarIconListener;
     private FrameLayout mEmptyBaseContainer;
 
     public interface OnBackButtonClickListener {
         void onBackButtonClicked();
+    }
+
+    /**
+     * This interface handles action bar and tool bar related
+     * changes on replacing fragments in activity container
+     */
+    public interface ActionBarIconListener {
+
+        void setActionBarTitle(String title);
+
     }
 
     @Override
@@ -28,9 +39,10 @@ public class BaseFragment extends Fragment {
         super.onAttach(context);
         try {
             mBackButtonClickListener = (OnBackButtonClickListener) context;
+            mActionBarIconListener = (ActionBarIconListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
-            throw new ClassCastException("Activity must implement OnBackButtonClickListener");
+            throw new ClassCastException("Activity must implement OnBackButtonClickListener,ActionBarIconListener");
         }
     }
 

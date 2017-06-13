@@ -62,6 +62,7 @@ public class NearPlaceFragment extends BaseFragment implements NearPlaceView {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         extractArguments();
+        mActionBarIconListener.setActionBarTitle(getString(R.string.near_places));
         showProgressBar();
         mPresenter.getNearLocationDetail(getActivity(), mLatitude, mLongitude);
 
