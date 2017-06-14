@@ -16,6 +16,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.test.google.googleplacesapplication.R;
 import com.test.google.googleplacesapplication.common.ui.BaseFragment;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.test.google.googleplacesapplication.common.util.Constants.IntentKeys.PLACE_PICKER_REQUEST;
 
@@ -72,11 +73,13 @@ public class PlacePickerFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
+        switch (resultCode) {
+            case RESULT_OK:
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 mListener.onLocationSelected(place.getLatLng().latitude, place.getLatLng().longitude);
-            }
+                break;
+            case RESULT_CANCELED:
+                getActivity().finish();
         }
     }
 

@@ -28,7 +28,7 @@ public class PlaceFragment extends RecyclerViewFragment implements PlaceAdapter.
     private OnNearPlaceClickListener mListener;
 
     public interface OnNearPlaceClickListener {
-        void onNearPlaceClicked(int pos);
+        void onNearPlaceClicked(int pos,String placeId);
     }
 
 
@@ -87,6 +87,7 @@ public class PlaceFragment extends RecyclerViewFragment implements PlaceAdapter.
 
     @Override
     public void onItemClicked(int pos) {
-        mListener.onNearPlaceClicked(pos);
+        if(mPlaceList.size()>pos)
+        mListener.onNearPlaceClicked(pos,mPlaceList.get(pos).placeId);
     }
 }

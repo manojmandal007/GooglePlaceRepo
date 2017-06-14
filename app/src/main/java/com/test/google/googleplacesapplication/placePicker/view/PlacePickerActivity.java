@@ -1,10 +1,14 @@
 package com.test.google.googleplacesapplication.placePicker.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.test.google.googleplacesapplication.R;
 import com.test.google.googleplacesapplication.common.ui.BaseActivity;
@@ -12,15 +16,23 @@ import com.test.google.googleplacesapplication.common.util.FragmentUtil;
 import com.test.google.googleplacesapplication.nearPlace.view.ui.NearPlaceDetailFragment;
 import com.test.google.googleplacesapplication.nearPlace.view.ui.NearPlaceFragment;
 import com.test.google.googleplacesapplication.nearPlace.view.ui.PlaceFragment;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.PlaceMapFragment;
+import com.test.google.googleplacesapplication.nearPlace.view.ui.WebsiteFragment;
 
 import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.LATITUDE_KEY;
 import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.LONGITUDE_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_ADDRESS_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_NAME_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_PHONE_KEY;
 import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_POS_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_RATING_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_WEBSITE_KEY;
+import static com.test.google.googleplacesapplication.common.util.Constants.BundleKeys.PLACE_WEBSITE_URL_KEY;
 
-public class PlacePickerActivity extends BaseActivity implements PlacePickerFragment.OnLocationSelectedListener, PlaceFragment.OnNearPlaceClickListener {
+public class PlacePickerActivity extends BaseActivity implements PlacePickerFragment.OnLocationSelectedListener, PlaceFragment.OnNearPlaceClickListener, NearPlaceDetailFragment.OnWebsiteButtonClickListener,
+        NearPlaceDetailFragment.OnMenuButtonClickListener {
 
     private GoogleApiClient mClient;
-    private Toolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +45,8 @@ public class PlacePickerActivity extends BaseActivity implements PlacePickerFrag
     }
 
     private void initView() {
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolBar);
     }
 
     @Override
@@ -47,6 +59,12 @@ public class PlacePickerActivity extends BaseActivity implements PlacePickerFrag
     protected void onStop() {
         mClient.disconnect();
         super.onStop();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
     @Override
@@ -69,10 +87,48 @@ public class PlacePickerActivity extends BaseActivity implements PlacePickerFrag
     }
 
     @Override
-    public void onNearPlaceClicked(int pos) {
+    public void onNearPlaceClicked(final int pos, String placeId) {
+        Places.GeoDataApi.getPlaceById(mClient, placeId)
+                .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                    @Override
+                    public void onResult(@NonNull PlaceBuffer places) {
+                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                            launchPlaceDetailScreen(pos, places.get(0));
+                        }
+                        places.release();
+                    }
+                });
+    }
+
+    private void launchPlaceDetailScreen(int pos, Place place) {
         Fragment fragment = new NearPlaceDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(PLACE_POS_KEY, pos);
+        bundle.putString(PLACE_NAME_KEY, place.getName().toString());
+        bundle.putFloat(PLACE_RATING_KEY, place.getRating());
+        bundle.putString(PLACE_ADDRESS_KEY, place.getAddress().toString());
+        bundle.putString(PLACE_PHONE_KEY, place.getPhoneNumber().toString());
+        if (place.getWebsiteUri() != null)
+            bundle.putString(PLACE_WEBSITE_KEY, place.getWebsiteUri().toString());
+        fragment.setArguments(bundle);
+        FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
+    }
+
+    @Override
+    public void onWebsiteButtonClicked(String url) {
+        Fragment fragment = new WebsiteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(PLACE_WEBSITE_URL_KEY, url);
+        fragment.setArguments(bundle);
+        FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
+    }
+
+    @Override
+    public void onMenuButtonClicked(double lat, double lang) {
+        Fragment fragment = new PlaceMapFragment();
+        Bundle bundle = new Bundle();
+        bundle.putDouble(LATITUDE_KEY, lat);
+        bundle.putDouble(LONGITUDE_KEY, lang);
         fragment.setArguments(bundle);
         FragmentUtil.replaceAndAddFragment(this, fragment, R.id.main_container);
     }

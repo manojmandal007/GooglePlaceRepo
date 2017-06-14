@@ -16,13 +16,9 @@ import com.test.google.googleplacesapplication.R;
 public class BaseFragment extends Fragment {
     private int mLayoutId;
     private ProgressBar mProgressBar;
-    protected OnBackButtonClickListener mBackButtonClickListener;
     protected ActionBarIconListener mActionBarIconListener;
     private FrameLayout mEmptyBaseContainer;
 
-    public interface OnBackButtonClickListener {
-        void onBackButtonClicked();
-    }
 
     /**
      * This interface handles action bar and tool bar related
@@ -32,17 +28,18 @@ public class BaseFragment extends Fragment {
 
         void setActionBarTitle(String title);
 
+        void setbackButtonVisibility(boolean status);
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mBackButtonClickListener = (OnBackButtonClickListener) context;
             mActionBarIconListener = (ActionBarIconListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
-            throw new ClassCastException("Activity must implement OnBackButtonClickListener,ActionBarIconListener");
+            throw new ClassCastException("Activity must implement ActionBarIconListener");
         }
     }
 
